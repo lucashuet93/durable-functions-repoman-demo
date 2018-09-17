@@ -5,7 +5,7 @@ body {
 
 .header {
     padding: 1em;
-    margin-bottom: 2em;
+    margin-bottom: 4em;
 }
 
 i {
@@ -15,4 +15,12 @@ i {
 .go-button-container {
     margin-top: 2em;
     text-align: center;
+}
+
+.submit-payment-container{
+    text-align: center;
+}
+
+.submit-payment-text{
+    margin-bottom: 2em;
 }

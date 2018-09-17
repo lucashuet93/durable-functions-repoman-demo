@@ -13,7 +13,7 @@ const Routes = () => (
     <div className='ms-Grid'>
       <Header />
       <Route exact={true} path="/" component={NotificationForm} />
-      <Route path="/submitPayment" component={SubmitPayment} />
+      <Route path="/submitPayment/:instanceId" component={SubmitPayment} />
     </div>
   </Router>
 )

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { DefaultButton, Dropdown, IDropdownOption, TextField } from 'office-ui-fabric-react';
+import { DefaultButton, Label, TextField } from 'office-ui-fabric-react';
 import * as React from 'react';
 import '../assets/styles/App.css';
 import { ContactMethod } from '../types/Enums';
@@ -42,29 +42,41 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
     this.handleButtonSubmit = this.handleButtonSubmit.bind(this);
   }
 
+  public renderContactMethodIcons() {
+    let phoneClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container';
+    let emailClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container';
+    const selectedClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container ms-bgColor-neutralLighter';
+    this.state.contactMethod === ContactMethod.Phone ? phoneClass = selectedClass : emailClass = selectedClass;
+    return (
+      <div className='ms-Grid-row'>
+        <div className="ms-Grid-col ms-sm1 ms-md1" />
+        <div className={phoneClass} onClick={this.handleContactMethodChanged.bind(this, ContactMethod.Phone)}>
+          <span className='ms-font-su'><i className="ms-Icon ms-Icon--Phone" /></span>
+        </div>
+        <div className={emailClass} onClick={this.handleContactMethodChanged.bind(this, ContactMethod.Email)}>
+          <span className='ms-font-su'><i className="ms-Icon ms-Icon--Mail" /></span>
+        </div>
+        <div className="ms-Grid-col ms-sm1 ms-md1" />
+      </div>
+    )
+  }
+
   public renderContact() {
     return (
       <div className='ms-Grid-row ms-font-m'>
         <div className="ms-Grid-col ms-sm12 ms-md12">
-          <div className='ms-Grid-row'>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
-            <div className="ms-Grid-col ms-sm8 ms-md8">
-              <Dropdown
-                label="Contact Method"
-                selectedKey={this.state.contactMethod}
-                onChanged={this.handleContactMethodChanged}
-                options={[
-                  { key: ContactMethod.Phone, text: ContactMethod.Phone },
-                  { key: ContactMethod.Email, text: ContactMethod.Email }
-                ]}
-              />
+          <div className='ms-Grid-row form-field'>
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm6 ms-md6">
+              <Label>Contact Method</Label>
+              {this.renderContactMethodIcons()}
             </div>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
           </div>
           {this.state.contactMethod === ContactMethod.Phone ?
-            <div className='ms-Grid-row'>
-              <div className="ms-Grid-col ms-sm2 ms-md2" />
-              <div className="ms-Grid-col ms-sm8 ms-md8">
+            <div className='ms-Grid-row form-field'>
+              <div className="ms-Grid-col ms-sm3 ms-md3" />
+              <div className="ms-Grid-col ms-sm6 ms-md6">
                 <TextField
                   label="Phone #"
                   onChange={this.handlePhoneNumberChanged}
@@ -72,12 +84,12 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                   errorMessage={this.state.phoneNumberError}
                 />
               </div>
-              <div className="ms-Grid-col ms-sm2 ms-md2" />
+              <div className="ms-Grid-col ms-sm3 ms-md3" />
             </div>
             :
-            <div className='ms-Grid-row'>
-              <div className="ms-Grid-col ms-sm2 ms-md2" />
-              <div className="ms-Grid-col ms-sm8 ms-md8">
+            <div className='ms-Grid-row form-field'>
+              <div className="ms-Grid-col ms-sm3 ms-md3" />
+              <div className="ms-Grid-col ms-sm6 ms-md6">
                 <TextField
                   label="Email Address"
                   onChange={this.handleEmailChanged}
@@ -85,7 +97,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                   errorMessage={this.state.emailError}
                 />
               </div>
-              <div className="ms-Grid-col ms-sm2 ms-md2" />
+              <div className="ms-Grid-col ms-sm3 ms-md3" />
             </div>
           }
         </div>
@@ -99,9 +111,9 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
         <div className="ms-Grid-col ms-sm12 ms-md12">
 
           {/* Amount Owed */}
-          <div className='ms-Grid-row'>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
-            <div className="ms-Grid-col ms-sm8 ms-md8">
+          <div className='ms-Grid-row form-field'>
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm6 ms-md6">
               <TextField
                 label="Amount Owed"
                 suffix={'$'}
@@ -110,13 +122,13 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                 errorMessage={this.state.amountOwedError}
               />
             </div>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
           </div>
 
           {/* SMS Interval */}
-          <div className='ms-Grid-row'>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
-            <div className="ms-Grid-col ms-sm8 ms-md8">
+          <div className='ms-Grid-row form-field'>
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm6 ms-md6">
               <TextField
                 label="Notification Interval"
                 suffix={'seconds'}
@@ -125,7 +137,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                 errorMessage={this.state.notificationIntervalError}
               />
             </div>
-            <div className="ms-Grid-col ms-sm2 ms-md2" />
+            <div className="ms-Grid-col ms-sm3 ms-md3" />
           </div>
 
           {/* Contact */}
@@ -159,8 +171,8 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
     });
   }
 
-  private handleContactMethodChanged(item: IDropdownOption) {
-    this.setState({ contactMethod: item.text });
+  private handleContactMethodChanged(method: ContactMethod) {
+    this.setState({ contactMethod: method });
   };
 
   private handleEmailChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {

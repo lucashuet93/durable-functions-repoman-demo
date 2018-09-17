@@ -24,3 +24,20 @@ i {
 .submit-payment-text{
     margin-bottom: 2em;
 }
+
+.contact-method-choice-container{
+    border: 1px solid #a6a6a6;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-top: 1em;
+}
+
+.contact-method-choice-container:hover{
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.form-field {
+    margin-bottom: 1em;
+}

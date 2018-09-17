@@ -2,12 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { DefaultButton, Dropdown, IDropdownOption, TextField } from 'office-ui-fabric-react';
 import * as React from 'react';
 import '../assets/styles/App.css';
+import { ContactMethod } from '../types/Enums';
 import { isValidEmail, isValidNumber, isValidPhoneNumber } from '../utilities/validations';
-
-enum ContactMethod {
-  Phone = 'Phone',
-  Email = 'Email'
-}
 
 interface INotificationFormState {
   amountOwed: string,

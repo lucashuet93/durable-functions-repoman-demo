@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from 'axios';
 import { DefaultButton, Dropdown, IDropdownOption, TextField } from 'office-ui-fabric-react';
 import * as React from 'react';
 import '../assets/styles/App.css';
@@ -184,7 +185,30 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
 
   private handleButtonSubmit() {
     if (!this.state.amountOwedError && !this.state.emailError && !this.state.phoneNumberError && !this.state.notificationIntervalError) {
-      // send the values to the orchestrator
+      const body = {
+        amountOwed: this.state.amountOwed,
+        contactMethod: this.state.contactMethod,
+        email: this.state.email,
+        notificationInterval: this.state.notificationInterval,
+        phoneNumber: this.state.phoneNumber,
+      }
+      console.log(`sending the following body to ${process.env.REACT_APP_ORCHESTRATOR_ENDPOINT}`, body)
+      axios.post(process.env.REACT_APP_ORCHESTRATOR_ENDPOINT as string, body)
+        .then((res: AxiosResponse) => {
+          this.setState({
+            amountOwed: '0.00',
+            amountOwedError: undefined,
+            contactMethod: ContactMethod.Phone,
+            email: '',
+            emailError: undefined,
+            notificationInterval: '60',
+            notificationIntervalError: undefined,
+            phoneNumber: '',
+            phoneNumberError: undefined
+          })
+        }).catch((error: any) => {
+          alert('An error occurred.')
+        })
     }
   }
 }

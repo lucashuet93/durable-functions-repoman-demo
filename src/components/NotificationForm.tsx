@@ -1,13 +1,14 @@
 import { DefaultButton, Dropdown, IDropdownOption, TextField } from 'office-ui-fabric-react';
 import * as React from 'react';
 import '../assets/styles/App.css';
+import { isValidEmail, isValidNumber, isValidPhoneNumber } from '../utilities/validations';
 
 enum ContactMethod {
   Phone = 'Phone',
   Email = 'Email'
 }
 
-interface IComponentState {
+interface INotificationFormState {
   amountOwed: string,
   amountOwedError: string | undefined,
   contactMethod: string,
@@ -20,9 +21,9 @@ interface IComponentState {
 
 }
 
-class NotificationForm extends React.Component<any, IComponentState>{
+class NotificationForm extends React.Component<any, INotificationFormState>{
 
-  public state: IComponentState = {
+  public state: INotificationFormState = {
     amountOwed: '0.00',
     amountOwedError: undefined,
     contactMethod: ContactMethod.Phone,
@@ -41,65 +42,7 @@ class NotificationForm extends React.Component<any, IComponentState>{
     this.handleContactMethodChanged = this.handleContactMethodChanged.bind(this);
     this.handleEmailChanged = this.handleEmailChanged.bind(this);
     this.handlePhoneNumberChanged = this.handlePhoneNumberChanged.bind(this);
-  }
-
-  public handleAmountOwedChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
-    const errorMessage: string | undefined = isNaN(Number(value)) ? `The value should be a number, actual is ${value}.` : undefined;
-    return this.setState({
-      amountOwed: value,
-      amountOwedError: errorMessage
-    });
-  }
-
-  public handleIntervalChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
-    const errorMessage: string | undefined = isNaN(Number(value)) ? `The value should be a number, actual is ${value}.` : undefined;
-    return this.setState({
-      notificationInterval: value,
-      notificationIntervalError: errorMessage
-    });
-  }
-
-  public handleContactMethodChanged(item: IDropdownOption) {
-    this.setState({ contactMethod: item.text });
-  };
-
-  public handleEmailChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
-    const errorMessage: string | undefined = !this.isValidEmail(value) ? `Invalid email.` : undefined;
-    return this.setState({
-      email: value,
-      emailError: errorMessage
-    });
-  }
-
-  public handlePhoneNumberChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
-    const errorMessage: string | undefined = !this.isValidPhoneNumber(value) ? `The value should use the format XXXXXXXXXX.` : undefined;
-    return this.setState({
-      phoneNumber: value,
-      phoneNumberError: errorMessage
-    });
-  }
-
-  public handleButtonSubmit() {
-    if (!this.state.amountOwedError && !this.state.emailError && !this.state.phoneNumberError && !this.state.notificationIntervalError) {
-      // send the values to the orchestrator
-    }
-  }
-
-  public isValidPhoneNumber(phoneNumber: string): boolean {
-    const phoneNumberRegex: RegExp = /^\d{10}$/;
-    if (phoneNumber.match(phoneNumberRegex)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public isValidEmail(email: string): boolean {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return (true)
-    } else {
-      return (false)
-    }
+    this.handleButtonSubmit = this.handleButtonSubmit.bind(this);
   }
 
   public renderContact() {
@@ -201,6 +144,48 @@ class NotificationForm extends React.Component<any, IComponentState>{
         </div>
       </div>
     );
+  }
+
+  private handleAmountOwedChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    const errorMessage: string | undefined = !isValidNumber(value) ? `The value should be a number, actual is ${value}.` : undefined;
+    return this.setState({
+      amountOwed: value,
+      amountOwedError: errorMessage
+    });
+  }
+
+  private handleIntervalChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    const errorMessage: string | undefined = !isValidNumber(value) ? `The value should be a number, actual is ${value}.` : undefined;
+    return this.setState({
+      notificationInterval: value,
+      notificationIntervalError: errorMessage
+    });
+  }
+
+  private handleContactMethodChanged(item: IDropdownOption) {
+    this.setState({ contactMethod: item.text });
+  };
+
+  private handleEmailChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    const errorMessage: string | undefined = !isValidEmail(value) ? `Invalid email.` : undefined;
+    return this.setState({
+      email: value,
+      emailError: errorMessage
+    });
+  }
+
+  private handlePhoneNumberChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    const errorMessage: string | undefined = !isValidPhoneNumber(value) ? `The value should use the format XXXXXXXXXX.` : undefined;
+    return this.setState({
+      phoneNumber: value,
+      phoneNumberError: errorMessage
+    });
+  }
+
+  private handleButtonSubmit() {
+    if (!this.state.amountOwedError && !this.state.emailError && !this.state.phoneNumberError && !this.state.notificationIntervalError) {
+      // send the values to the orchestrator
+    }
   }
 }
 

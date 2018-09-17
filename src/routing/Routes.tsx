@@ -10,7 +10,7 @@ import SubmitPayment from '../components/SubmitPayment';
 
 const Routes = () => (
   <Router>
-    <div>
+    <div className='ms-Grid'>
       <Header />
       <Route exact={true} path="/" component={NotificationForm} />
       <Route path="/submitPayment" component={SubmitPayment} />

@@ -1,14 +1,13 @@
 import * as React from 'react';
-import '../assets/styles/App.css';
 
-class App extends React.Component {
+class SubmitPayment extends React.Component {
   public render() {
     return (
       <div>
-        App
+        SubmitPayment
       </div>
     );
   }
 }
 
-export default App;
+export default SubmitPayment;

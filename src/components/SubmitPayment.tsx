@@ -1,3 +1,4 @@
+import { createQueueService, QueueService } from 'azure-storage';
 import * as React from 'react';
 
 
@@ -17,12 +18,21 @@ class SubmitPayment extends React.Component<any, ISubmitPaymentState> {
 
   public componentWillMount() {
     const instanceId: string = this.props.match.params.instanceId;
-    setTimeout(() => {
-      console.log(`Prepared to send instanceId - ${instanceId} to the queue/function endpoint`);
-      this.setState({
-        instanceSent: true
-      })
-    }, 4000)
+    const queueSvc: QueueService = createQueueService(process.env.REACT_APP_AZURE_STORAGE_CONNECTION_STRING as string);
+    queueSvc.createQueueIfNotExists(process.env.REACT_APP_AZURE_STORAGE_QUEUE_NAME as string, (error: any, results: any, response: any) => {
+      if (!error) {
+        // Queue created or exists
+        queueSvc.createMessage(process.env.REACT_APP_AZURE_STORAGE_QUEUE_NAME as string, instanceId, (createError: any, createResults: any, createResponse: any) => {
+          if (!createError) {
+            // Message inserted
+            console.log(`Sent instanceId - ${instanceId} to the queue`);
+            this.setState({
+              instanceSent: true
+            })
+          }
+        });
+      }
+    });
   }
 
   public render() {

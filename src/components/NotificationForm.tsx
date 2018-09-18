@@ -172,15 +172,15 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handleContactMethodChanged(method: ContactMethod) {
-    if(method === ContactMethod.Phone){
-      this.setState({ 
+    if (method === ContactMethod.Phone) {
+      this.setState({
         contactMethod: method,
-        emailError: undefined 
+        emailError: undefined
       });
     } else {
-      this.setState({ 
+      this.setState({
         contactMethod: method,
-        phoneNumberError: undefined 
+        phoneNumberError: undefined
       });
     }
   };
@@ -202,7 +202,15 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handleButtonSubmit() {
-    if (this.state.contactMethod === ContactMethod.Phone && this.state.phoneNumber.length === 0) {
+    if (this.state.amountOwed.length === 0) {
+      this.setState({
+        amountOwedError: 'You must provide a value.'
+      })
+    } else if (this.state.notificationInterval.length === 0) {
+      this.setState({
+        notificationIntervalError: 'You must provide a value.'
+      })
+    } else if (this.state.contactMethod === ContactMethod.Phone && this.state.phoneNumber.length === 0) {
       this.setState({
         phoneNumberError: 'The value should use the format XXXXXXXXXX.'
       })

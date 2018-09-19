@@ -5,6 +5,24 @@ body {
     padding: 0;
 }
 
+.footer {
+    bottom: 0;
+    position: fixed;
+    margin-top: 4em;
+    width: 100%;
+    text-align: left;
+    padding: 1em;
+}
+
+.footer a{
+    text-decoration: none;
+    color: #3c3c3c;    
+}
+
+.footer-right {
+    text-align: right;
+}
+
 .contact-method-choice-container{
     border: 1px solid #a6a6a6;
     text-align: center;
@@ -91,5 +109,9 @@ body {
     }
     .submit-payment-text{
         margin-top: 1em;
+    }
+    .footer a{
+        text-decoration: none;
+        color: rgb(102,102,102);    
     }
 }

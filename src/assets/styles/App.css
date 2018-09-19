@@ -71,10 +71,12 @@ body {
 @media only screen and (max-width: 479px) { 
     .header {
         padding: 1em;
+        padding-bottom: .5em;
         margin-bottom: 1.5em;
     }
     .header-text {
         margin-top: 0em;
+        text-align: right;
     }
     .form-field {
         margin-bottom: 1em;

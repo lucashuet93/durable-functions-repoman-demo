@@ -41,13 +41,18 @@ class SubmitPayment extends React.Component<any, ISubmitPaymentState> {
         {this.state.instanceSent === true ?
           <div className='ms-Grid-col ms-sm12 ms-md12'>
             <div className='ms-Grid-row submit-payment-container'>
-              <div className='ms-Grid-col ms-sm12 ms-md12 submit-payment-text'>
-                <span className='ms-font-su ms-fontColor-neutralPrimary'>Payment Submitted</span>
+              <div className='ms-Grid-col ms-sm12 ms-md12 submit-payment-header'>
+                <span className='ms-font-su ms-fontColor-neutralPrimary'>Thank you for your payment!</span>
               </div>
             </div>
             <div className='ms-Grid-row submit-payment-container'>
               <div className='ms-Grid-col ms-sm12 ms-md12'>
-                <img src={require('../assets/images/success.png')} />
+                  <i className="ms-Icon ms-Icon--Accept ms-fontColor-themeDark accept-icon" aria-hidden="true" />
+              </div>
+            </div>
+            <div className='ms-Grid-row submit-payment-container'>
+              <div className='ms-Grid-col ms-sm12 ms-md12 submit-payment-text'>
+                <span className='ms-font-xl ms-fontColor-neutralPrimary'>You will no longer receive notifications regarding your prior balance.</span>
               </div>
             </div>
           </div>

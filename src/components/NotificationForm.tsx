@@ -146,7 +146,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
           {/* Button */}
           <div className='ms-Grid-row go-button-container'>
             <div className="ms-Grid-col ms-sm12 ms-md12">
-              <DefaultButton text='GO' onClick={this.handleButtonSubmit} />
+              <DefaultButton className="go-button" text='GO' onClick={this.handleButtonSubmit} />
             </div>
           </div>
 

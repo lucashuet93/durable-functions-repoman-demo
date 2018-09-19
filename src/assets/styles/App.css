@@ -8,7 +8,7 @@ body {
     margin-bottom: 4em;
 }
 
-i {
+.header-text {
     margin-top: .25em;
 }
 
@@ -17,12 +17,27 @@ i {
     text-align: center;
 }
 
+.go-button {
+    background-color: #005a9e;
+    color:white;
+}
+
+
+.go-button:hover {
+    background-color: #004578;
+    color:white;
+}
+
 .submit-payment-container{
     text-align: center;
 }
 
-.submit-payment-text{
+.submit-payment-header{
     margin-bottom: 2em;
+}
+
+.submit-payment-text{
+    margin-top: 2em;
 }
 
 .contact-method-choice-container{
@@ -39,5 +54,11 @@ i {
 }
 
 .form-field {
-    margin-bottom: 1em;
+    margin-bottom: 2em;
+}
+
+.accept-icon{
+    font-size: 100px;
+    margin: .25em;
+    font-weight: 900;
 }

@@ -1,8 +1,17 @@
-/* All Screens */
-
 body {
     margin: 0;
     padding: 0;
+    /* exceed footer height so Go button is never hidden on screen resize */
+    padding-bottom: 4em;
+}
+
+.header {
+    padding: 1em;
+    margin-bottom: 4em;
+}
+
+.header-text {
+    margin-top: .25em;
 }
 
 .footer {
@@ -16,7 +25,7 @@ body {
 
 .footer a{
     text-decoration: none;
-    color: #3c3c3c;    
+    color: rgb(102,102,102);    
 }
 
 .footer-right {
@@ -46,27 +55,6 @@ body {
     color:white;
 }
 
-.submit-payment-container{
-    text-align: center;
-}
-
-.accept-icon{
-    font-size: 100px;
-    margin: .25em;
-    font-weight: 900;
-}
-
-/* Desktop */
-
-.header {
-    padding: 1em;
-    margin-bottom: 4em;
-}
-
-.header-text {
-    margin-top: .25em;
-}
-
 .go-button-container {
     margin-top: 2em;
     text-align: center;
@@ -84,6 +72,16 @@ body {
     margin-top: 2em;
 }
 
+.submit-payment-container{
+    text-align: center;
+}
+
+.accept-icon{
+    font-size: 100px;
+    margin: .25em;
+    font-weight: 900;
+}
+
 /* Mobile */
 
 @media only screen and (max-width: 479px) { 
@@ -94,13 +92,15 @@ body {
     }
     .header-text {
         margin-top: 0em;
-        text-align: right;
+    }
+    .header-text *{
+        margin-left: 1em;
     }
     .form-field {
         margin-bottom: 1em;
     }
     .go-button-container {
-        margin-top: 1em;
+        margin-top: .5em;
         text-align: center;
     }
     .submit-payment-header{
@@ -110,8 +110,34 @@ body {
     .submit-payment-text{
         margin-top: 1em;
     }
-    .footer a{
-        text-decoration: none;
-        color: rgb(102,102,102);    
+}
+
+/* Medium */
+
+@media screen and (max-width:639px) and (min-width:480px) {
+    .header-text {
+        margin-top: .75em;
     }
+    .header-text *{
+        margin-left: 1em;
+    }
+}​
+
+.foo {
+    text-align: center
+}
+
+/* Large */
+
+@media screen and (max-width:1023px) and (min-width:640px) {
+    .header-text {
+        margin-top: .75em;
+    }
+    .header-text *{
+        margin-left: 1em;
+    }
+}​
+
+.foo {
+    text-align: center
 }

@@ -18,7 +18,7 @@ interface INotificationFormState {
 
 }
 
-class NotificationForm extends React.Component<any, INotificationFormState>{
+class NotificationForm extends React.Component<{}, INotificationFormState>{
 
   public state: INotificationFormState = {
     amountOwed: '0.00',
@@ -34,6 +34,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
 
   constructor(p: any) {
     super(p);
+    // bind this to event handlers that set state
     this.handleAmountOwedChanged = this.handleAmountOwedChanged.bind(this);
     this.handleIntervalChanged = this.handleIntervalChanged.bind(this);
     this.handleContactMethodChanged = this.handleContactMethodChanged.bind(this);
@@ -43,9 +44,11 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   public renderContactMethodIcons() {
+    // by default phone and email class will be unselected
     let phoneClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container';
     let emailClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container';
     const selectedClass: string = 'ms-Grid-col ms-sm5 ms-md5 contact-method-choice-container ms-bgColor-neutralLighter';
+    // update phone or email class depending on which one was selected by user
     this.state.contactMethod === ContactMethod.Phone ? phoneClass = selectedClass : emailClass = selectedClass;
     return (
       <div className='ms-Grid-row'>
@@ -65,6 +68,8 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
     return (
       <div className='ms-Grid-row ms-font-m'>
         <div className="ms-Grid-col ms-sm12 ms-md12">
+
+          {/* Contact Method */}
           <div className='ms-Grid-row form-field'>
             <div className="ms-Grid-col ms-sm2 ms-md3" />
             <div className="ms-Grid-col ms-sm8 ms-md6">
@@ -73,6 +78,8 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
             </div>
             <div className="ms-Grid-col ms-sm2 ms-md3" />
           </div>
+
+          {/* Phone # */}
           {this.state.contactMethod === ContactMethod.Phone ?
             <div className='ms-Grid-row form-field'>
               <div className="ms-Grid-col ms-sm2 ms-md3" />
@@ -87,18 +94,20 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
               <div className="ms-Grid-col ms-sm2 ms-md3" />
             </div>
             :
+
+            // Email Address
             <div className='ms-Grid-row form-field'>
-              <div className="ms-Grid-col ms-sm2 ms-md3" />
-              <div className="ms-Grid-col ms-sm8 ms-md6">
-                <TextField
-                  label="Email Address"
-                  onChange={this.handleEmailChanged}
-                  value={this.state.email}
-                  errorMessage={this.state.emailError}
-                />
-              </div>
-              <div className="ms-Grid-col ms-sm2 ms-md3" />
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
+            <div className="ms-Grid-col ms-sm8 ms-md6">
+              <TextField
+                label="Email Address"
+                onChange={this.handleEmailChanged}
+                value={this.state.email}
+                errorMessage={this.state.emailError}
+              />
             </div>
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
+          </div>
           }
         </div>
       </div >
@@ -156,6 +165,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handleAmountOwedChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    // validate that the amount is a valid number
     const errorMessage: string | undefined = !isValidNumber(value) ? `The value should be a number, actual is ${value}.` : undefined;
     return this.setState({
       amountOwed: value,
@@ -164,6 +174,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handleIntervalChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    // validate that the interval is a valid number
     const errorMessage: string | undefined = !isValidNumber(value) ? `The value should be a number, actual is ${value}.` : undefined;
     return this.setState({
       notificationInterval: value,
@@ -172,6 +183,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handleContactMethodChanged(method: ContactMethod) {
+    // reset error message for the other contact method so as not to prevent submission
     if (method === ContactMethod.Phone) {
       this.setState({
         contactMethod: method,
@@ -186,6 +198,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   };
 
   private handleEmailChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    // validate that the email is valid
     const errorMessage: string | undefined = !isValidEmail(value) ? `Invalid email.` : undefined;
     return this.setState({
       email: value,
@@ -194,6 +207,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
   }
 
   private handlePhoneNumberChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
+    // validate that the phone number is valid
     const errorMessage: string | undefined = !isValidPhoneNumber(value) ? `The value should use the format XXXXXXXXXX.` : undefined;
     return this.setState({
       phoneNumber: value,
@@ -210,15 +224,18 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
       this.setState({
         notificationIntervalError: 'You must provide a value.'
       })
-    } else if (this.state.contactMethod === ContactMethod.Phone && this.state.phoneNumber.length === 0) {
+      // re validate phone number because the error message resets on contact method toggle
+    } else if (this.state.contactMethod === ContactMethod.Phone && (this.state.phoneNumber.length === 0 || !isValidPhoneNumber(this.state.phoneNumber)) ) {
       this.setState({
         phoneNumberError: 'The value should use the format XXXXXXXXXX.'
       })
-    } else if (this.state.contactMethod === ContactMethod.Email && this.state.email.length === 0) {
+      // re validate email address because the error message resets on contact method toggle
+    } else if (this.state.contactMethod === ContactMethod.Email && (this.state.email.length === 0 || !isValidEmail(this.state.email))) {
       this.setState({
         emailError: 'Invalid email.'
       })
     } else if (!this.state.amountOwedError && !this.state.emailError && !this.state.phoneNumberError && !this.state.notificationIntervalError) {
+      // validation has passed, send the relevant information to the durable function orchestrator
       const body = {
         amountOwed: this.state.amountOwed,
         contactMethod: this.state.contactMethod,

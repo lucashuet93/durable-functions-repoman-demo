@@ -3,7 +3,7 @@ import * as React from 'react';
 
 initializeIcons();
 
-class Header extends React.Component {
+class Header extends React.Component<{}, {}> {
   public render() {
     return (
       <div className='ms-Grid-row ms-bgColor-themeDark header'>

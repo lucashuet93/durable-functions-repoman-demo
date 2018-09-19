@@ -66,17 +66,17 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
       <div className='ms-Grid-row ms-font-m'>
         <div className="ms-Grid-col ms-sm12 ms-md12">
           <div className='ms-Grid-row form-field'>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
-            <div className="ms-Grid-col ms-sm6 ms-md6">
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
+            <div className="ms-Grid-col ms-sm8 ms-md6">
               <Label>Contact Method</Label>
               {this.renderContactMethodIcons()}
             </div>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
           </div>
           {this.state.contactMethod === ContactMethod.Phone ?
             <div className='ms-Grid-row form-field'>
-              <div className="ms-Grid-col ms-sm3 ms-md3" />
-              <div className="ms-Grid-col ms-sm6 ms-md6">
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
+              <div className="ms-Grid-col ms-sm8 ms-md6">
                 <TextField
                   label="Phone #"
                   onChange={this.handlePhoneNumberChanged}
@@ -84,12 +84,12 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                   errorMessage={this.state.phoneNumberError}
                 />
               </div>
-              <div className="ms-Grid-col ms-sm3 ms-md3" />
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
             </div>
             :
             <div className='ms-Grid-row form-field'>
-              <div className="ms-Grid-col ms-sm3 ms-md3" />
-              <div className="ms-Grid-col ms-sm6 ms-md6">
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
+              <div className="ms-Grid-col ms-sm8 ms-md6">
                 <TextField
                   label="Email Address"
                   onChange={this.handleEmailChanged}
@@ -97,7 +97,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                   errorMessage={this.state.emailError}
                 />
               </div>
-              <div className="ms-Grid-col ms-sm3 ms-md3" />
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
             </div>
           }
         </div>
@@ -112,8 +112,8 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
 
           {/* Amount Owed */}
           <div className='ms-Grid-row form-field'>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
-            <div className="ms-Grid-col ms-sm6 ms-md6">
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
+            <div className="ms-Grid-col ms-sm8 ms-md6">
               <TextField
                 label="Amount Owed"
                 suffix={'$'}
@@ -122,13 +122,13 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                 errorMessage={this.state.amountOwedError}
               />
             </div>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
           </div>
 
           {/* SMS Interval */}
           <div className='ms-Grid-row form-field'>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
-            <div className="ms-Grid-col ms-sm6 ms-md6">
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
+            <div className="ms-Grid-col ms-sm8 ms-md6">
               <TextField
                 label="Notification Interval"
                 suffix={'seconds'}
@@ -137,7 +137,7 @@ class NotificationForm extends React.Component<any, INotificationFormState>{
                 errorMessage={this.state.notificationIntervalError}
               />
             </div>
-            <div className="ms-Grid-col ms-sm3 ms-md3" />
+            <div className="ms-Grid-col ms-sm2 ms-md3" />
           </div>
 
           {/* Contact */}

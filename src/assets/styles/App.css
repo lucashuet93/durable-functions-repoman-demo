@@ -1,43 +1,8 @@
+/* All Screens */
+
 body {
     margin: 0;
     padding: 0;
-}
-
-.header {
-    padding: 1em;
-    margin-bottom: 4em;
-}
-
-.header-text {
-    margin-top: .25em;
-}
-
-.go-button-container {
-    margin-top: 2em;
-    text-align: center;
-}
-
-.go-button {
-    background-color: #005a9e;
-    color:white;
-}
-
-
-.go-button:hover {
-    background-color: #004578;
-    color:white;
-}
-
-.submit-payment-container{
-    text-align: center;
-}
-
-.submit-payment-header{
-    margin-bottom: 2em;
-}
-
-.submit-payment-text{
-    margin-top: 2em;
 }
 
 .contact-method-choice-container{
@@ -53,12 +18,76 @@ body {
     border: 1px solid black;
 }
 
-.form-field {
-    margin-bottom: 2em;
+.go-button {
+    background-color: #005a9e;
+    color:white;
+}
+
+.go-button:hover {
+    background-color: #004578;
+    color:white;
+}
+
+.submit-payment-container{
+    text-align: center;
 }
 
 .accept-icon{
     font-size: 100px;
     margin: .25em;
     font-weight: 900;
+}
+
+/* Desktop */
+
+.header {
+    padding: 1em;
+    margin-bottom: 4em;
+}
+
+.header-text {
+    margin-top: .25em;
+}
+
+.go-button-container {
+    margin-top: 2em;
+    text-align: center;
+}
+
+.form-field {
+    margin-bottom: 2em;
+}
+
+.submit-payment-header{
+    margin-bottom: 2em;
+}
+
+.submit-payment-text{
+    margin-top: 2em;
+}
+
+/* Mobile */
+
+@media only screen and (max-width: 479px) { 
+    .header {
+        padding: 1em;
+        margin-bottom: 1.5em;
+    }
+    .header-text {
+        margin-top: 0em;
+    }
+    .form-field {
+        margin-bottom: 1em;
+    }
+    .go-button-container {
+        margin-top: 1em;
+        text-align: center;
+    }
+    .submit-payment-header{
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    .submit-payment-text{
+        margin-top: 1em;
+    }
 }

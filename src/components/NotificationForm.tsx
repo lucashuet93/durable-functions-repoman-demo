@@ -243,7 +243,6 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
         notificationInterval: this.state.notificationInterval,
         phoneNumber: this.state.phoneNumber,
       }
-      console.log(`Prepared to send the following body to ${process.env.REACT_APP_ORCHESTRATOR_ENDPOINT}`, body)
       axios.post(process.env.REACT_APP_ORCHESTRATOR_ENDPOINT as string, body)
         .then((res: AxiosResponse) => {
           this.setState({

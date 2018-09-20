@@ -45,14 +45,15 @@ body {
     border: 1px solid black;
 }
 
+/* button color properties are overwritten on deployed site unless marked important */
 .go-button {
-    background-color: #005a9e;
-    color:white;
+    background-color: #005a9e !important;
+    color:white !important;
 }
 
 .go-button:hover {
-    background-color: #004578;
-    color:white;
+    background-color: #004578 !important;
+    color:white !important;
 }
 
 .go-button-container {

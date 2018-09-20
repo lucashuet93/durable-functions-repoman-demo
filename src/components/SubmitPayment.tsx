@@ -28,7 +28,6 @@ class SubmitPayment extends React.Component<any, ISubmitPaymentState> {
         queueSvc.createMessage(process.env.REACT_APP_AZURE_STORAGE_QUEUE_NAME as string, instanceId, (createError: any, createResults: any, createResponse: any) => {
           if (!createError) {
             // message inserted, set this.state.instanceSet to true in order to display the success message
-            console.log(`Sent instanceId - ${instanceId} to the queue`);
             this.setState({
               instanceSent: true
             })

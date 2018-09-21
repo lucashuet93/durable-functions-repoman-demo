@@ -1,21 +1,21 @@
 import axios, { AxiosResponse } from 'axios';
-import { DefaultButton, Label, TextField } from 'office-ui-fabric-react';
+import { DefaultButton, Dropdown, IDropdownOption, Label, TextField } from 'office-ui-fabric-react';
 import * as React from 'react';
 import '../assets/styles/App.css';
-import { ContactMethod } from '../types/Enums';
+import { ContactMethod, MeasurementUnit } from '../types/Enums';
 import { isValidEmail, isValidNumber, isValidPhoneNumber } from '../utilities/validations';
 
 interface INotificationFormState {
-  amountOwed: string,
-  amountOwedError: string | undefined,
-  contactMethod: string,
-  email: string,
-  emailError: string | undefined,
-  notificationInterval: string,
-  notificationIntervalError: string | undefined,
-  phoneNumber: string,
-  phoneNumberError: string | undefined
-
+  amountOwed: string;
+  amountOwedError: string | undefined;
+  contactMethod: string;
+  email: string;
+  emailError: string | undefined;
+  measurementUnit: MeasurementUnit;
+  notificationInterval: string;
+  notificationIntervalError: string | undefined;
+  phoneNumber: string;
+  phoneNumberError: string | undefined;
 }
 
 class NotificationForm extends React.Component<{}, INotificationFormState>{
@@ -26,7 +26,8 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
     contactMethod: ContactMethod.Phone,
     email: '',
     emailError: undefined,
-    notificationInterval: '60',
+    measurementUnit: MeasurementUnit.Minutes,
+    notificationInterval: '1',
     notificationIntervalError: undefined,
     phoneNumber: '',
     phoneNumberError: undefined
@@ -41,6 +42,7 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
     this.handleEmailChanged = this.handleEmailChanged.bind(this);
     this.handlePhoneNumberChanged = this.handlePhoneNumberChanged.bind(this);
     this.handleButtonSubmit = this.handleButtonSubmit.bind(this);
+    this.handleMeasurementUnitChanged = this.handleMeasurementUnitChanged.bind(this);
   }
 
   public renderContactMethodIcons() {
@@ -97,17 +99,17 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
 
             // Email Address
             <div className='ms-Grid-row form-field'>
-            <div className="ms-Grid-col ms-sm2 ms-md3" />
-            <div className="ms-Grid-col ms-sm8 ms-md6">
-              <TextField
-                label="Email Address"
-                onChange={this.handleEmailChanged}
-                value={this.state.email}
-                errorMessage={this.state.emailError}
-              />
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
+              <div className="ms-Grid-col ms-sm8 ms-md6">
+                <TextField
+                  label="Email Address"
+                  onChange={this.handleEmailChanged}
+                  value={this.state.email}
+                  errorMessage={this.state.emailError}
+                />
+              </div>
+              <div className="ms-Grid-col ms-sm2 ms-md3" />
             </div>
-            <div className="ms-Grid-col ms-sm2 ms-md3" />
-          </div>
           }
         </div>
       </div >
@@ -138,13 +140,31 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
           <div className='ms-Grid-row form-field'>
             <div className="ms-Grid-col ms-sm2 ms-md3" />
             <div className="ms-Grid-col ms-sm8 ms-md6">
-              <TextField
-                label="Notification Interval"
-                suffix={'seconds'}
-                onChange={this.handleIntervalChanged}
-                value={this.state.notificationInterval}
-                errorMessage={this.state.notificationIntervalError}
-              />
+              <div className='ms-Grid-row'>
+                <div className="ms-Grid-col ms-sm12 ms-md12">
+                  <Label>Notification Interval</Label>
+                </div>
+              </div>
+              <div className='ms-Grid-row'>
+                <div className="ms-Grid-col ms-sm8 ms-md8 ms-lg9 ms-xl10 notification-interval-container-left">
+                  <TextField
+                    onChange={this.handleIntervalChanged}
+                    value={this.state.notificationInterval}
+                    errorMessage={this.state.notificationIntervalError}
+                  />
+                </div>
+                <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg3 ms-xl2 notification-interval-container-right">
+                  <Dropdown
+                    className="ms-bgColor-neutralLight"
+                    selectedKey={this.state.measurementUnit}
+                    onChanged={this.handleMeasurementUnitChanged}
+                    options={[
+                      { key: MeasurementUnit.Minutes, text: MeasurementUnit.Minutes },
+                      { key: MeasurementUnit.Seconds, text: MeasurementUnit.Seconds }
+                    ]}
+                  />
+                </div>
+              </div>
             </div>
             <div className="ms-Grid-col ms-sm2 ms-md3" />
           </div>
@@ -197,6 +217,13 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
     }
   };
 
+  private handleMeasurementUnitChanged(measurement: IDropdownOption) {
+    const unit: MeasurementUnit = measurement.text === MeasurementUnit.Minutes ? MeasurementUnit.Minutes : MeasurementUnit.Seconds;
+    this.setState({
+      measurementUnit: unit
+    });
+  };
+
   private handleEmailChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
     // validate that the email is valid
     const errorMessage: string | undefined = !isValidEmail(value) ? `Invalid email.` : undefined;
@@ -225,7 +252,7 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
         notificationIntervalError: 'You must provide a value.'
       })
       // re validate phone number because the error message resets on contact method toggle
-    } else if (this.state.contactMethod === ContactMethod.Phone && (this.state.phoneNumber.length === 0 || !isValidPhoneNumber(this.state.phoneNumber)) ) {
+    } else if (this.state.contactMethod === ContactMethod.Phone && (this.state.phoneNumber.length === 0 || !isValidPhoneNumber(this.state.phoneNumber))) {
       this.setState({
         phoneNumberError: 'The value should use the format XXXXXXXXXX.'
       })
@@ -236,22 +263,27 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
       })
     } else if (!this.state.amountOwedError && !this.state.emailError && !this.state.phoneNumberError && !this.state.notificationIntervalError) {
       // validation has passed, send the relevant information to the durable function orchestrator
+      // convert the notification interval into seconds
+      let notificationInterval: number = parseFloat(this.state.notificationInterval);
+      notificationInterval = this.state.measurementUnit === MeasurementUnit.Seconds ? Math.floor(notificationInterval) : Math.floor(notificationInterval * 60);
       const body = {
         amountOwed: this.state.amountOwed,
         contactMethod: this.state.contactMethod,
         email: this.state.email,
-        notificationInterval: this.state.notificationInterval,
+        notificationInterval: notificationInterval.toString(),
         phoneNumber: this.state.phoneNumber,
       }
       axios.post(process.env.REACT_APP_ORCHESTRATOR_ENDPOINT as string, body)
         .then((res: AxiosResponse) => {
+          // reset state
           this.setState({
             amountOwed: '0.00',
             amountOwedError: undefined,
             contactMethod: ContactMethod.Phone,
             email: '',
             emailError: undefined,
-            notificationInterval: '60',
+            measurementUnit: MeasurementUnit.Minutes,
+            notificationInterval: '1',
             notificationIntervalError: undefined,
             phoneNumber: '',
             phoneNumberError: undefined

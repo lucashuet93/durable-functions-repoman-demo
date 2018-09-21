@@ -65,6 +65,24 @@ body {
     margin-bottom: 2em;
 }
 
+.notification-interval-container-left {
+    padding-right: 0 !important;
+}
+
+.notification-interval-container-right {
+    padding-left: 0 !important;
+    border-bottom-color: rgb(166, 166, 166)!important;
+}
+
+.notification-interval-container-right * {
+    border-left: transparent !important;
+    background-color: rgb(244, 244, 244)!important;
+}
+
+.notification-interval-container-left * {
+    border-right: transparent !important;
+}
+
 .submit-payment-header{
     margin-bottom: 2em;
 }

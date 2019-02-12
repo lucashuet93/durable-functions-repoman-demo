@@ -235,7 +235,7 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
 
   private handlePhoneNumberChanged(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value: string): void {
     // validate that the phone number is valid
-    const errorMessage: string | undefined = !isValidPhoneNumber(value) ? `The value should use the format XXXXXXXXXX.` : undefined;
+    const errorMessage: string | undefined = !isValidPhoneNumber(value) ? `Invalid phone number.` : undefined;
     return this.setState({
       phoneNumber: value,
       phoneNumberError: errorMessage
@@ -254,7 +254,7 @@ class NotificationForm extends React.Component<{}, INotificationFormState>{
       // re validate phone number because the error message resets on contact method toggle
     } else if (this.state.contactMethod === ContactMethod.Phone && (this.state.phoneNumber.length === 0 || !isValidPhoneNumber(this.state.phoneNumber))) {
       this.setState({
-        phoneNumberError: 'The value should use the format XXXXXXXXXX.'
+        phoneNumberError: 'Invalid phone number.'
       })
       // re validate email address because the error message resets on contact method toggle
     } else if (this.state.contactMethod === ContactMethod.Email && (this.state.email.length === 0 || !isValidEmail(this.state.email))) {

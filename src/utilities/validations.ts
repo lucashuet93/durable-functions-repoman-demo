@@ -3,8 +3,7 @@ export const isValidNumber = (value: string): boolean => {
 }
 
 export const isValidPhoneNumber = (phoneNumber: string): boolean => {
-    const phoneNumberRegex: RegExp = /^\d{10}$/;
-    if (phoneNumber.match(phoneNumberRegex)) {
+    if (phoneNumber.match("[0-9]+$")) {
         return true;
     } else {
         return false;
